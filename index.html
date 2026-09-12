@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高阶助教培训</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(145deg, #0a0e1a 0%, #1a1f35 40%, #0d1225 100%);
+      color: #e8eaf0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 背景装饰光晕 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -30%;
+      left: -20%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(100, 140, 255, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -30%;
+      right: -20%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(255, 180, 100, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 标题区域 */
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    .header-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 200, 100, 0.15), rgba(255, 160, 50, 0.08));
+      border: 1px solid rgba(255, 200, 100, 0.25);
+      margin-bottom: 20px;
+      box-shadow: 0 0 40px rgba(255, 180, 80, 0.12);
+    }
+
+    .header-icon i {
+      font-size: 32px;
+      color: #ffd98a;
+      text-shadow: 0 0 20px rgba(255, 200, 100, 0.5);
+    }
+
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: #f5f0e8;
+      margin-bottom: 10px;
+      text-shadow: 0 0 40px rgba(255, 220, 150, 0.15);
+    }
+
+    .header .subtitle {
+      font-size: 0.95rem;
+      color: rgba(220, 225, 240, 0.55);
+      letter-spacing: 0.2em;
+      font-weight: 300;
+    }
+
+    .header .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 200, 100, 0.4), transparent);
+      margin: 18px auto 0;
+    }
+
+    /* 卡片网格 */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 22px;
+      animation: fadeInUp 0.8s ease-out 0.15s both;
+    }
+
+    /* 卡片样式 */
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 24px 24px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 18px 18px 0 0;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.13);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    /* 卡片图标 */
+    .card-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      font-size: 22px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-icon {
+      transform: scale(1.08);
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+      color: #f0ede6;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: rgba(200, 208, 225, 0.6);
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-arrow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 18px;
+      font-size: 0.78rem;
+      color: rgba(200, 208, 225, 0.35);
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+    }
+
+    .card:hover .card-arrow {
+      color: rgba(200, 208, 225, 0.7);
+      gap: 10px;
+    }
+
+    /* 每个卡片的主题色 */
+    .card-fayuanwen::before { background: linear-gradient(90deg, #f5c842, #e8a020); }
+    .card-fayuanwen .card-icon { background: rgba(245, 200, 66, 0.12); color: #f5c842; border: 1px solid rgba(245, 200, 66, 0.2); }
+
+    .card-liutiao::before { background: linear-gradient(90deg, #9b6dff, #7c4dff); }
+    .card-liutiao .card-icon { background: rgba(155, 109, 255, 0.12); color: #b388ff; border: 1px solid rgba(155, 109, 255, 0.2); }
+
+    .card-guang::before { background: linear-gradient(90deg, #ffb347, #ff8c00); }
+    .card-guang .card-icon { background: rgba(255, 179, 71, 0.12); color: #ffb347; border: 1px solid rgba(255, 179, 71, 0.2); }
+
+    .card-shui::before { background: linear-gradient(90deg, #4fc3f7, #2196f3); }
+    .card-shui .card-icon { background: rgba(79, 195, 247, 0.12); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.2); }
+
+    .card-xinjing::before { background: linear-gradient(90deg, #4dd0e1, #26c6da); }
+    .card-xinjing .card-icon { background: rgba(77, 208, 225, 0.12); color: #4dd0e1; border: 1px solid rgba(77, 208, 225, 0.2); }
+
+    .card-juelin::before { background: linear-gradient(90deg, #ff8a65, #ff5722); }
+    .card-juelin .card-icon { background: rgba(255, 138, 101, 0.12); color: #ff8a65; border: 1px solid rgba(255, 138, 101, 0.2); }
+
+    .card-chanhui::before { background: linear-gradient(90deg, #ef5350, #c62828); }
+    .card-chanhui .card-icon { background: rgba(239, 83, 80, 0.12); color: #ef5350; border: 1px solid rgba(239, 83, 80, 0.2); }
+
+    /* 页脚 */
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(180, 190, 210, 0.3);
+      letter-spacing: 0.15em;
+      animation: fadeIn 1s ease-out 0.4s both;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 动画 */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* 响应式 */
+    @media (max-width: 640px) {
+      body { padding: 30px 14px 40px; }
+      .header h1 { font-size: 1.7rem; }
+      .header-icon { width: 58px; height: 58px; }
+      .header-icon i { font-size: 26px; }
+      .grid { grid-template-columns: 1fr; gap: 16px; }
+      .card { padding: 22px 20px 20px; }
+      .card-title { font-size: 1.1rem; }
+    }
+
+    @media (min-width: 641px) and (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 901px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- 头部 -->
+    <header class="header">
+      <div class="header-icon">
+        <i class="fas fa-seedling"></i>
+      </div>
+      <h1>高阶助教培训</h1>
+      <p class="subtitle">修行 · 净化 · 觉知</p>
+      <div class="divider"></div>
+    </header>
+
+    <!-- 导航卡片网格 -->
+    <div class="grid">
+
+      <!-- 发愿文 -->
+      <a href="https://ptisai.github.io/fayuanwen" target="_blank" rel="noopener" class="card card-fayuanwen">
+        <div class="card-icon"><i class="fas fa-hands-praying"></i></div>
+        <div class="card-title">发愿文</div>
+        <div class="card-desc">皈依发心 · 忏悔文 · 四弘誓愿 · 四无量心 · 恒常六愿文 · 回向</div>
+        <div class="card-arrow">前往 <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <!-- 六条洞见 -->
+      <a href="https://ptisai.github.io/liutiaodongjian" target="_blank" rel="noopener" class="card card-liutiao">
+        <div class="card-icon"><i class="fas fa-eye"></i></div>
+        <div class="card-title">六条洞见</div>
+       
+        <div class="card-arrow">前往 <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <!-- 光净化 -->
+      <a href="https://ptisai.github.io/guangjinghua" target="_blank" rel="noopener" class="card card-guang">
+        <div class="card-icon"><i class="fas fa-sun"></i></div>
+        <div class="card-title">光净化</div>
+     
+        <div class="card-arrow">前往 <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <!-- 水净化 -->
+      <a href="https://ptisai.github.io/shuijinghua" target="_blank" rel="noopener" class="card card-shui">
+        <div class="card-icon"><i class="fas fa-water"></i></div>
+        <div class="card-title">水净化</div>
+     
+        <div class="card-arrow">前往 <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <!-- 心经 -->
+      <a href="https://ptisai.github.io/myheart" target="_blank" rel="noopener" class="card card-xinjing">
+        <div class="card-icon"><i class="fas fa-heart"></i></div>
+        <div class="card-title">心经</div>
+     
+        <div class="card-arrow">前往 <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <!-- 觉林菩萨偈 -->
+      <a href="https://ptisai.github.io/juelinpusaji" target="_blank" rel="noopener" class="card card-juelin">
+        <div class="card-icon"><i class="fas fa-palette"></i></div>
+        <div class="card-title">觉林菩萨偈</div>
+      
+        <div class="card-arrow">前往 <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <!-- 忏悔三昧 -->
+      <a href="https://ptisai.github.io/chanhuisanmei1" target="_blank" rel="noopener" class="card card-chanhui">
+        <div class="card-icon"><i class="fas fa-dove"></i></div>
+        <div class="card-title">忏悔三昧</div>
+      
+        <div class="card-arrow">前往 <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+      <p>高阶助教 · 共修共行</p>
+    </footer>
+  </div>
+
+  <!-- 点击卡片时的微妙反馈 -->
+  <script>
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        // 添加短暂的高亮动画
+        this.style.transition = 'all 0.15s ease';
+        this.style.transform = 'translateY(-2px) scale(0.99)';
+        setTimeout(() => {
+          this.style.transform = '';
+          this.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }, 150);
+      });
+    });
+  </script>
+
+</body>
+</html>
